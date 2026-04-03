@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IApyme × MakeYourWay × Aurora Planet</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --black: #0d0c0a;
+  --cream: #f2ede4;
+  --warm-mid: #c8b99a;
+  --terra: #b85c38;
+  --amber: #d4943a;
+  --sage: #7a8c72;
+  --mist: #a8b5c4;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* LANG TOGGLE */
+.lang-toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 2rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(242,237,228,0.18);
+  border-radius: 100px;
+  overflow: hidden;
+  background: rgba(13,12,10,0.75);
+  backdrop-filter: blur(12px);
+}
+.lang-btn {
+  padding: 0.45rem 1.1rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.35);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+.lang-btn.active {
+  background: var(--terra);
+  color: var(--cream);
+  border-radius: 100px;
+}
+
+/* COVER */
+.cover {
+  height: 100vh;
+  min-height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.cover-bg { position: absolute; inset: 0; z-index: 0; }
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
+.tag { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-mid); line-height: 2; }
+.cover-center { position: relative; z-index: 2; text-align: center; }
+.cover-center .eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--terra); margin-bottom: 2rem; display: block; }
+.cover-center h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 300; line-height: 0.95; letter-spacing: -0.01em; }
+.cover-center h1 em { font-style: italic; color: var(--terra); }
+.cover-center h1 .line2 { display: block; font-weight: 600; color: var(--cream); }
+.cover-bottom { display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 2; }
+.partner-row { display: flex; gap: 0.5rem; align-items: center; }
+.p-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--terra); }
+.p-name { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream); opacity: 0.6; }
+.p-sep { font-size: 0.65rem; color: var(--terra); opacity: 0.5; }
+.scroll-hint { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warm-mid); opacity: 0.5; writing-mode: vertical-rl; }
+
+/* ORBITS */
+.orbits-section { padding: 8rem 3.5rem; position: relative; overflow: hidden; }
+.section-eyebrow { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--terra); margin-bottom: 1.2rem; display: block; }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.15; max-width: 520px; margin-bottom: 5rem; }
+.section-title em { font-style: italic; color: var(--terra); }
+.orbits-container { display: flex; justify-content: center; align-items: center; min-height: 500px; }
+
+/* LAYERS */
+.layers-section { background: #141210; padding: 8rem 3.5rem; }
+.layers-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; margin-top: 5rem; background: rgba(255,255,255,0.06); }
+.layer-cell { background: #141210; padding: 3rem 2.5rem; position: relative; overflow: hidden; transition: background 0.4s; }
+.layer-cell:hover { background: #1a1714; }
+.layer-num { font-family: 'Cormorant Garamond', serif; font-size: 5rem; font-weight: 300; line-height: 1; color: rgba(255,255,255,0.04); position: absolute; top: 1.5rem; right: 1.5rem; }
+.layer-icon { width: 36px; height: 36px; margin-bottom: 2rem; }
+.layer-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terra); margin-bottom: 0.8rem; display: block; }
+.layer-title { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; line-height: 1.2; margin-bottom: 1rem; }
+.layer-desc { font-size: 0.8rem; color: rgba(242,237,228,0.4); line-height: 1.8; }
+.layer-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem; }
+.ltag { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.7rem; border: 1px solid rgba(255,255,255,0.1); color: rgba(242,237,228,0.4); }
+
+/* MIDDLE */
+.middle-section { padding: 10rem 3.5rem; position: relative; overflow: hidden; text-align: center; }
+.big-q { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4.5vw, 4rem); font-weight: 300; font-style: italic; line-height: 1.3; max-width: 800px; margin: 0 auto 4rem; color: rgba(242,237,228,0.85); }
+.big-q em { color: var(--terra); font-style: italic; }
+.three-tracks { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+.track-pill { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+.track-circle { width: 90px; height: 90px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: border-color 0.3s; }
+.track-circle:hover { border-color: var(--terra); }
+.track-name { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,237,228,0.35); max-width: 90px; text-align: center; line-height: 1.6; }
+
+/* CLOSING */
+.closing-section { background: var(--cream); color: var(--black); padding: 8rem 3.5rem; position: relative; overflow: hidden; }
+.closing-section .section-eyebrow { color: var(--terra); }
+.closing-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 300; line-height: 1.0; max-width: 700px; margin-bottom: 4rem; }
+.closing-title em { font-style: italic; color: var(--terra); }
+.closing-bottom { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(13,12,10,0.12); padding-top: 2.5rem; }
+.closing-who { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(13,12,10,0.4); line-height: 2; }
+.closing-who span { display: block; color: var(--black); opacity: 0.7; }
+.closing-note { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: rgba(13,12,10,0.45); max-width: 320px; text-align: right; line-height: 1.7; }
+
+/* KO font */
+body.ko { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; }
+body.ko .cover-center h1, body.ko .section-title, body.ko .layer-title, body.ko .closing-title {
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', Georgia, serif;
+  letter-spacing: -0.01em;
+}
+body.ko .big-q {
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', Georgia, serif;
+  font-style: normal;
+}
+body.ko .tag, body.ko .section-eyebrow, body.ko .layer-label, body.ko .track-name,
+body.ko .closing-who, body.ko .eyebrow, body.ko .scroll-hint, body.ko .p-name {
+  letter-spacing: 0.03em;
+}
+</style>
+</head>
+<body>
+
+<!-- LANG TOGGLE -->
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="btn-ko" onclick="setLang('ko')">한국어</button>
+</div>
+
+<!-- COVER -->
+<div class="cover">
+  <svg class="cover-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="950" cy="180" r="380" fill="none" stroke="rgba(184,92,56,0.07)" stroke-width="1"/>
+    <circle cx="950" cy="180" r="260" fill="none" stroke="rgba(184,92,56,0.06)" stroke-width="0.5"/>
+    <circle cx="950" cy="180" r="150" fill="none" stroke="rgba(184,92,56,0.08)" stroke-width="0.5"/>
+    <circle cx="950" cy="180" r="120" fill="rgba(184,92,56,0.04)"/>
+    <circle cx="120" cy="680" r="280" fill="none" stroke="rgba(122,140,114,0.06)" stroke-width="0.5"/>
+    <circle cx="120" cy="680" r="160" fill="none" stroke="rgba(122,140,114,0.05)" stroke-width="0.5"/>
+    <line x1="0" y1="400" x2="1200" y2="400" stroke="rgba(255,255,255,0.02)" stroke-width="0.5"/>
+    <line x1="600" y1="0" x2="600" y2="800" stroke="rgba(255,255,255,0.02)" stroke-width="0.5"/>
+    <g opacity="0.15">
+      <circle cx="200" cy="200" r="1" fill="#f2ede4"/><circle cx="280" cy="200" r="1" fill="#f2ede4"/>
+      <circle cx="360" cy="200" r="1" fill="#f2ede4"/><circle cx="200" cy="280" r="1" fill="#f2ede4"/>
+      <circle cx="280" cy="280" r="1" fill="#f2ede4"/><circle cx="360" cy="280" r="1" fill="#f2ede4"/>
+      <circle cx="200" cy="360" r="1" fill="#f2ede4"/><circle cx="280" cy="360" r="1" fill="#f2ede4"/>
+      <circle cx="360" cy="360" r="1" fill="#f2ede4"/>
+    </g>
+  </svg>
+
+  <div class="cover-top">
+    <div class="tag">IApyme Consultores<br>× MakeYourWay<br>× Aurora Planet</div>
+    <div class="tag" style="text-align:right;">Cheongdo<br>April 2026</div>
+  </div>
+
+  <div class="cover-center">
+    <span class="eyebrow" data-en="A proposition · not a plan" data-ko="제안 · 계획이 아닌">A proposition · not a plan</span>
+    <h1>
+      <span data-en="What could we" data-ko="우리가 함께">What could we</span>
+      <em><br><span data-en="build" data-ko="무엇을 만들 수">build</span></em>
+      <span class="line2" data-en="together?" data-ko="있을까요?">together?</span>
+    </h1>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="partner-row">
+      <div class="p-dot"></div>
+      <span class="p-name">IApyme</span>
+      <span class="p-sep">×</span>
+      <span class="p-name">MakeYourWay</span>
+      <span class="p-sep">×</span>
+      <span class="p-name">Aurora Planet</span>
+    </div>
+    <div class="scroll-hint" data-en="scroll" data-ko="스크롤">scroll</div>
+  </div>
+</div>
+
+<!-- ORBITS -->
+<div class="orbits-section">
+  <span class="section-eyebrow" data-en="01 · Three worlds" data-ko="01 · 세 개의 세계">01 · Three worlds</span>
+  <h2 class="section-title" id="orbits-title">
+    Every great collaboration starts with understanding what <em>each side brings.</em>
+  </h2>
+
+  <div class="orbits-container">
+    <svg width="100%" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="max-width:860px;">
+      <circle cx="450" cy="180" r="165" fill="rgba(122,140,114,0.06)" stroke="rgba(122,140,114,0.2)" stroke-width="0.8"/>
+      <circle cx="290" cy="310" r="165" fill="rgba(184,92,56,0.06)" stroke="rgba(184,92,56,0.25)" stroke-width="0.8"/>
+      <circle cx="610" cy="310" r="165" fill="rgba(168,181,196,0.06)" stroke="rgba(168,181,196,0.2)" stroke-width="0.8"/>
+      <ellipse cx="450" cy="295" rx="80" ry="60" fill="rgba(212,148,58,0.06)"/>
+
+      <text x="450" y="80" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="9" letter-spacing="3" fill="rgba(122,140,114,0.7)">AURORA PLANET</text>
+      <text id="svg-ap-1" x="450" y="99" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="22" font-weight="300" fill="rgba(242,237,228,0.75)" data-en="Community &amp; Events" data-ko="커뮤니티 &amp; 이벤트">Community &amp; Events</text>
+      <text id="svg-ap-2" x="450" y="118" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="9" fill="rgba(242,237,228,0.3)" data-en="Open innovation · Hackatons · Co-design" data-ko="오픈 이노베이션 · 해커톤 · 코디자인">Open innovation · Hackatons · Co-design</text>
+
+      <text x="165" y="330" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="9" letter-spacing="3" fill="rgba(184,92,56,0.7)">IAPYME</text>
+      <text id="svg-ia-1" x="165" y="349" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="22" font-weight="300" fill="rgba(242,237,228,0.75)" data-en="AI Application" data-ko="AI 적용">AI Application</text>
+      <text id="svg-ia-2" x="165" y="368" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="9" fill="rgba(242,237,228,0.3)" data-en="Tools · Workflows · Strategy" data-ko="도구 · 워크플로우 · 전략">Tools · Workflows · Strategy</text>
+
+      <text x="732" y="330" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="9" letter-spacing="3" fill="rgba(168,181,196,0.7)">MAKEYOURWAY</text>
+      <text id="svg-my-1" x="732" y="349" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="22" font-weight="300" fill="rgba(242,237,228,0.75)" data-en="Methodology" data-ko="방법론">Methodology</text>
+      <text id="svg-my-2" x="732" y="368" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="9" fill="rgba(242,237,228,0.3)" data-en="Agile · Design Thinking · Facilitation" data-ko="애자일 · 디자인 싱킹 · 퍼실리테이션">Agile · Design Thinking · Facilitation</text>
+
+      <text id="svg-ctr-1" x="450" y="278" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-style="italic" font-size="16" fill="rgba(212,148,58,0.9)" data-en="where something" data-ko="새로운 무언가가">where something</text>
+      <text id="svg-ctr-2" x="450" y="298" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-style="italic" font-size="16" fill="rgba(212,148,58,0.9)" data-en="new emerges" data-ko="탄생하는 곳">new emerges</text>
+      <circle cx="450" cy="315" r="3" fill="rgba(212,148,58,0.4)"/>
+    </svg>
+  </div>
+</div>
+
+<!-- LAYERS -->
+<div class="layers-section">
+  <span class="section-eyebrow" data-en="02 · What we bring" data-ko="02 · 우리가 가져오는 것">02 · What we bring</span>
+  <h2 class="section-title" style="color:var(--cream);" id="layers-title">
+    Two layers.<br><em>One combined voice.</em>
+  </h2>
+
+  <div class="layers-grid">
+    <div class="layer-cell">
+      <span class="layer-num">01</span>
+      <svg class="layer-icon" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="12" stroke="rgba(184,92,56,0.5)" stroke-width="0.8"/>
+        <circle cx="18" cy="18" r="6" stroke="rgba(184,92,56,0.7)" stroke-width="0.8"/>
+        <circle cx="18" cy="18" r="2" fill="rgba(184,92,56,0.8)"/>
+        <line x1="18" y1="6" x2="18" y2="2" stroke="rgba(184,92,56,0.4)" stroke-width="0.8"/>
+        <line x1="30" y1="18" x2="34" y2="18" stroke="rgba(184,92,56,0.4)" stroke-width="0.8"/>
+        <line x1="6" y1="18" x2="2" y2="18" stroke="rgba(184,92,56,0.4)" stroke-width="0.8"/>
+        <line x1="18" y1="30" x2="18" y2="34" stroke="rgba(184,92,56,0.4)" stroke-width="0.8"/>
+      </svg>
+      <span class="layer-label">IApyme Consultores</span>
+      <h3 class="layer-title" data-en="Applied AI intelligence" data-ko="응용 AI 인텔리전스">Applied AI intelligence</h3>
+      <p class="layer-desc" data-en="We make AI real and usable. Not theory — practical tools, real workflows, measurable results for businesses of all sizes." data-ko="AI를 현실적이고 활용 가능하게 만듭니다. 이론이 아닌 — 실용적인 도구, 실제 워크플로우, 모든 규모의 비즈니스를 위한 측정 가능한 결과.">We make AI real and usable. Not theory — practical tools, real workflows, measurable results for businesses of all sizes.</p>
+      <div class="layer-tags">
+        <span class="ltag" data-en="+50 clients" data-ko="+50개 클라이언트">+50 clients</span>
+        <span class="ltag" data-en="+150 trained" data-ko="+150명 교육">+150 trained</span>
+        <span class="ltag" data-en="SME strategy" data-ko="중소기업 전략">SME strategy</span>
+        <span class="ltag" data-en="AI tools" data-ko="AI 도구">AI tools</span>
+      </div>
+    </div>
+
+    <div class="layer-cell">
+      <span class="layer-num">02</span>
+      <svg class="layer-icon" viewBox="0 0 36 36" fill="none">
+        <rect x="4" y="4" width="12" height="12" rx="1" stroke="rgba(168,181,196,0.5)" stroke-width="0.8"/>
+        <rect x="20" y="4" width="12" height="12" rx="1" stroke="rgba(168,181,196,0.5)" stroke-width="0.8"/>
+        <rect x="4" y="20" width="12" height="12" rx="1" stroke="rgba(168,181,196,0.5)" stroke-width="0.8"/>
+        <rect x="20" y="20" width="12" height="12" rx="1" stroke="rgba(168,181,196,0.7)" stroke-width="0.8" fill="rgba(168,181,196,0.06)"/>
+        <line x1="16" y1="10" x2="20" y2="10" stroke="rgba(168,181,196,0.3)" stroke-width="0.5"/>
+        <line x1="10" y1="16" x2="10" y2="20" stroke="rgba(168,181,196,0.3)" stroke-width="0.5"/>
+        <line x1="26" y1="16" x2="26" y2="20" stroke="rgba(168,181,196,0.3)" stroke-width="0.5"/>
+      </svg>
+      <span class="layer-label">MakeYourWay</span>
+      <h3 class="layer-title" data-en="Human-centred methodology" data-ko="인간 중심 방법론">Human-centred methodology</h3>
+      <p class="layer-desc" data-en="Masters of agile and design thinking. They turn complex challenges into structured journeys where teams discover their own solutions." data-ko="애자일과 디자인 싱킹의 전문가들. 복잡한 과제를 팀이 스스로 해결책을 발견하는 구조화된 여정으로 전환합니다.">Masters of agile and design thinking. They turn complex challenges into structured journeys where teams discover their own solutions.</p>
+      <div class="layer-tags">
+        <span class="ltag" data-en="Design Thinking" data-ko="디자인 싱킹">Design Thinking</span>
+        <span class="ltag" data-en="Double Diamond" data-ko="더블 다이아몬드">Double Diamond</span>
+        <span class="ltag" data-en="Agile" data-ko="애자일">Agile</span>
+        <span class="ltag" data-en="Facilitation" data-ko="퍼실리테이션">Facilitation</span>
+      </div>
+    </div>
+
+    <div class="layer-cell" style="background:rgba(184,92,56,0.04);border-left:1px solid rgba(184,92,56,0.15);">
+      <span class="layer-num" style="color:rgba(184,92,56,0.08);">✦</span>
+      <svg class="layer-icon" viewBox="0 0 36 36" fill="none">
+        <circle cx="14" cy="18" r="9" stroke="rgba(184,92,56,0.4)" stroke-width="0.8"/>
+        <circle cx="22" cy="18" r="9" stroke="rgba(168,181,196,0.4)" stroke-width="0.8"/>
+        <ellipse cx="18" cy="18" rx="3" ry="9" fill="rgba(212,148,58,0.08)" stroke="rgba(212,148,58,0.3)" stroke-width="0.5"/>
+      </svg>
+      <span class="layer-label" style="color:var(--amber);" data-en="Combined" data-ko="결합">Combined</span>
+      <h3 class="layer-title" style="font-style:italic;" data-en="The space between" data-ko="사이의 공간">The space between</h3>
+      <p class="layer-desc" data-en="Where AI meets human process. Where global insight meets local needs. Where structured innovation becomes something genuinely new." data-ko="AI가 인간의 프로세스를 만나는 곳. 글로벌 인사이트가 로컬 니즈를 만나는 곳. 구조화된 혁신이 진정으로 새로운 것이 되는 곳.">Where AI meets human process. Where global insight meets local needs. Where structured innovation becomes something genuinely new.</p>
+      <div class="layer-tags">
+        <span class="ltag" style="border-color:rgba(184,92,56,0.3);color:rgba(184,92,56,0.6);" data-en="AI-powered design" data-ko="AI 기반 디자인">AI-powered design</span>
+        <span class="ltag" style="border-color:rgba(184,92,56,0.3);color:rgba(184,92,56,0.6);" data-en="Innovation labs" data-ko="이노베이션 랩">Innovation labs</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MIDDLE -->
+<div class="middle-section">
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="600" cy="300" r="400" fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+    <circle cx="600" cy="300" r="280" fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+    <circle cx="600" cy="300" r="160" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+  </svg>
+  <p class="big-q" id="big-quote" style="position:relative;z-index:1;"></p>
+
+  <div class="three-tracks" style="position:relative;z-index:1;">
+    <div class="track-pill">
+      <div class="track-circle">
+        <svg viewBox="0 0 28 28" fill="none">
+          <path d="M14 4 C8 4 4 8 4 14 C4 20 8 24 14 24" stroke="rgba(122,140,114,0.7)" stroke-width="0.8" fill="none"/>
+          <path d="M14 4 C20 4 24 8 24 14 C24 20 20 24 14 24" stroke="rgba(122,140,114,0.4)" stroke-width="0.8" fill="none"/>
+          <circle cx="14" cy="14" r="3" fill="rgba(122,140,114,0.3)" stroke="rgba(122,140,114,0.6)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <span class="track-name" data-en="Local tourism innovation" data-ko="지역 관광 혁신">Local tourism innovation</span>
+    </div>
+    <div class="track-pill">
+      <div class="track-circle" style="border-color:rgba(184,92,56,0.2);">
+        <svg viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="10" r="4" stroke="rgba(184,92,56,0.7)" stroke-width="0.8"/>
+          <path d="M8 24 C8 19 10 17 14 17 C18 17 20 19 20 24" stroke="rgba(184,92,56,0.5)" stroke-width="0.8" fill="none"/>
+          <path d="M6 14 L22 14" stroke="rgba(184,92,56,0.2)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <span class="track-name" data-en="Self-discovery &amp; gap-year" data-ko="자기 발견 &amp; 갭이어">Self-discovery &amp; gap-year</span>
+    </div>
+    <div class="track-pill">
+      <div class="track-circle" style="border-color:rgba(168,181,196,0.25);">
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect x="4" y="8" width="20" height="13" rx="1.5" stroke="rgba(168,181,196,0.6)" stroke-width="0.8" fill="none"/>
+          <path d="M9 8 L9 6 C9 5 10 4 12 4 L16 4 C18 4 19 5 19 6 L19 8" stroke="rgba(168,181,196,0.4)" stroke-width="0.8" fill="none"/>
+          <line x1="4" y1="15" x2="24" y2="15" stroke="rgba(168,181,196,0.3)" stroke-width="0.5"/>
+          <circle cx="14" cy="15" r="2" fill="rgba(168,181,196,0.2)" stroke="rgba(168,181,196,0.6)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <span class="track-name" data-en="Social innovation AX" data-ko="소셜 이노베이션 AX">Social innovation AX</span>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing-section">
+  <span class="section-eyebrow" data-en="03 · The invitation" data-ko="03 · 초대">03 · The invitation</span>
+  <h2 class="closing-title" id="closing-title"></h2>
+
+  <svg style="position:absolute;right:0;top:50%;transform:translateY(-50%);opacity:0.06;pointer-events:none;" width="380" height="380" viewBox="0 0 380 380" fill="none">
+    <circle cx="190" cy="190" r="180" stroke="#0d0c0a" stroke-width="0.8"/>
+    <circle cx="190" cy="190" r="130" stroke="#0d0c0a" stroke-width="0.8"/>
+    <circle cx="190" cy="190" r="80" stroke="#0d0c0a" stroke-width="0.8"/>
+    <circle cx="190" cy="190" r="30" fill="#0d0c0a"/>
+  </svg>
+
+  <div class="closing-bottom">
+    <div class="closing-who">
+      <span data-en="From" data-ko="보내는 곳">From</span>
+      <span>IApyme Consultores · Bilbao, Spain</span>
+      <span>MakeYourWay · Bilbao, Spain</span>
+    </div>
+    <p class="closing-note" id="closing-note"></p>
+  </div>
+</div>
+
+<script>
+const copy = {
+  en: {
+    'orbits-title': 'Every great collaboration starts with understanding what <em>each side brings.</em>',
+    'layers-title': 'Two layers.<br><em>One combined voice.</em>',
+    'big-quote': '"Aurora Planet\'s hackathon has the <em>community.</em><br>We bring the <em>tools and method.</em><br>Together — what could teams actually <em>create?</em>"',
+    'closing-title': 'We don\'t bring<br>a <em>plan.</em><br>We bring a <em>conversation.</em>',
+    'closing-note': '"Tell us what you see.<br>We\'ll tell you what we can add."'
+  },
+  ko: {
+    'orbits-title': '모든 훌륭한 협업은<br>각자가 <em>무엇을 가져오는지</em><br>이해하는 것에서 시작됩니다.',
+    'layers-title': '두 개의 레이어.<br><em>하나의 통합된 목소리.</em>',
+    'big-quote': '"Aurora Planet의 해커톤에는 <em>커뮤니티</em>가 있습니다.<br>우리는 <em>도구와 방법론</em>을 가져옵니다.<br>함께 — 팀들이 실제로 무엇을 <em>만들 수 있을까요?</em>"',
+    'closing-title': '우리는 계획을<br><em>가져오지 않습니다.</em><br>우리는 <em>대화를 가져옵니다.</em>',
+    'closing-note': '"당신이 보는 것을 말씀해 주세요.<br>우리가 무엇을 더할 수 있는지<br>말씀드리겠습니다."'
+  }
+};
+
+const svgNodes = [
+  'svg-ap-1','svg-ap-2','svg-ia-1','svg-ia-2','svg-my-1','svg-my-2','svg-ctr-1','svg-ctr-2'
+];
+
+function setLang(lang) {
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
+  document.body.classList.toggle('ko', lang === 'ko');
+
+  // Rich HTML blocks
+  Object.keys(copy[lang]).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = copy[lang][id];
+  });
+
+  // All data-en / data-ko plain nodes
+  document.querySelectorAll('[data-en][data-ko]').forEach(el => {
+    if (svgNodes.includes(el.id)) return;
+    el.innerHTML = el.getAttribute('data-' + lang);
+  });
+
+  // SVG text nodes (textContent only, no innerHTML)
+  svgNodes.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = el.getAttribute('data-' + lang);
+  });
+}
+
+// Init rendered content
+setLang('en');
+</script>
+</body>
+</html>
